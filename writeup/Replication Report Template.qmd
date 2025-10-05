@@ -1,6 +1,6 @@
 ---
-title: "Replication of Study X by Sample & Sample (20xx, Psychological Science)"
-author: "Replication Author[s] (contact information)"
+title: "Replication of 'Two faces of holistic face processing: Facilitation and interference underlying part-whole and composite effects' by Jin, Hayward, & Cheung (2024, Journal of Vision)"
+author: "Seojin Lee (seojinl@stanford.edu)"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
   html:
@@ -12,7 +12,18 @@ format:
 
 ## Introduction
 
-[No abstract is needed.]  Each replication project will have a straightforward, no frills report of the study and results.  These reports will be publicly available as supplementary material for the aggregate report(s) of the project as a whole.  Also, to maximize project integrity, the intro and methods will be written and critiqued in advance of data collection.  Introductions can be just 1-2 paragraphs clarifying the main idea of the original study, the target finding for replication, and any other essential information.  It will NOT have a literature review -- that is in the original publication. You can write both the introduction and the methods in past tense.  
+### Justification 
+My research interests lie in human visual perception, particularly in understanding how the brain integrates low-level information from complex visual input to achieve higher-level understanding of the object. Face is a great example of this, as it involves integrating smaller visual fragments such as eyes, nose, and mouth to achieve an understanding of the identity. The complete composite task from Jin, Hayward, & Cheung (2024) offers a well-defined behavioral paradigm to study this integration process. Specifically, it separates two components of holistic processing -- facilitation and interference, rather than a single, unified holistic effect. Replicating this effect will deepen my understanding of face perception mechanisms. 
+
+### Stimuli and Procedure
+This replication focuses on the **complete composite task**. In the task, participant judged whether the top half of a composite face matched with the top half of previously shown face while ignoring the bottom half. In the *aligned-congruent condition*, both halves were from the same identity, while in the *aligned-incongruent condition*, the bottom half came from a different identity. Performance in these conditions was compared to an *isolated (top-only)* baseline. In the original study, facilitation was observed when congruent information improved performance, while interference emerged when incongruent information impaired performance. The effects was seen across both *d'* (accuracy) and reaction times. As in the original study, the task will be implemented online using jsPsych and hosted on Prolific. Stimuli will be grayscale composite faces drawn from open databases (Chicago Face Database). Each trial will display two faces (500 ms each) and participants will respond using keyboard keys ("S" for same, "D" for different).
+
+Potential challenges include implementing the online experiment. Although the authors described the experimental structure in detail (stimulus type, timing, and response method), they did not provide their jsPsych code. I plan to replicate the task myself using standardized face stimuli from the Chicago Face Database, to match the original design. Another challenge involves the analysis using R. Since I have limited experience with R, I expect a learning curve in data processing and mixed-effects modeling. I plan to rely on existing example scripts from the original paper's repo and R tutorials. 
+
+
+### Links to repos 
+* Replication repository: https://github.com/psych251/jin2024
+* Original paper: https://jov.arvojournals.org/article.aspx?articleid=2802147
 
 
 ## Methods
@@ -20,6 +31,8 @@ format:
 ### Power Analysis
 
 Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size.  Considerations of feasibility for selecting planned sample size.
+
+The original study reported a large facilitation (*z* = 10.17, *p* < 0.001) and interference (*z* = -20.33, *p* < 0.001) effects in accuracy. 
 
 ### Planned Sample
 
