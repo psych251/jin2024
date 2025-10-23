@@ -13,13 +13,23 @@ format:
 ## Introduction
 
 ### Justification 
-My research interests lie in human visual perception, particularly in understanding how the brain integrates low-level information from complex visual input to achieve higher-level understanding of the object. Face is a great example of this, as it involves integrating smaller visual fragments such as eyes, nose, and mouth to achieve an understanding of the identity. The complete composite task from Jin, Hayward, & Cheung (2024) offers a well-defined behavioral paradigm to study this integration process. Specifically, it separates two components of holistic processing -- facilitation and interference, rather than a single, unified holistic effect. Replicating this effect will deepen my understanding of face perception mechanisms. 
+My research interests lie in human visual perception, particularly in understanding how the brain integrates low-level information from complex visual input to achieve higher-level understanding of the object. 
+Face is a great example of this, as it involves integrating smaller visual fragments such as eyes, nose, and mouth to achieve an understanding of the identity. 
+The complete composite task from Jin, Hayward, & Cheung (2024) offers a well-defined behavioral paradigm to study this integration process. Specifically, it separates two components of holistic processing -- facilitation and interference, rather than a single, unified holistic effect. 
+Replicating this effect will deepen my understanding of face perception mechanisms. 
+
 
 ### Stimuli and Procedure
-This replication focuses on the **complete composite task**. In the task, participant judged whether the top half of a composite face matched with the top half of previously shown face while ignoring the bottom half. In the *aligned-congruent condition*, both halves were from the same identity, while in the *aligned-incongruent condition*, the bottom half came from a different identity. Performance in these conditions was compared to an *isolated (top-only)* baseline. In the original study, facilitation was observed when congruent information improved performance, while interference emerged when incongruent information impaired performance. The effects was seen across both *d'* (accuracy) and reaction times. As in the original study, the task will be implemented online using jsPsych and hosted on Prolific. Stimuli will be grayscale composite faces drawn from open databases (Chicago Face Database). Each trial will display two faces (500 ms each) and participants will respond using keyboard keys ("S" for same, "D" for different).
-
-Potential challenges include implementing the online experiment. Although the authors described the experimental structure in detail (stimulus type, timing, and response method), they did not provide their jsPsych code. I plan to replicate the task myself using standardized face stimuli from the Chicago Face Database, to match the original design. Another challenge involves the analysis using R. Since I have limited experience with R, I expect a learning curve in data processing and mixed-effects modeling. I plan to rely on existing example scripts from the original paper's repo and R tutorials. 
-
+This replication focuses on the **complete composite task** online using jsPsych on Prolific. 
+Each trial presents the following: fixaton (500 ms), a study composite (500 ms), a mask (500 ms), then a test stimulus. Participants judge same/different for the cued half (top or bottom) while ignoring the other half. 
+Conditions include: 
+  - congruency (congruent vs. incongruent)
+  - alignment (aligned vs. misaligned)
+  - correct response (same vs. different)
+In addition, isolated top/bottom halves serve as a baselien to quantify facilitation (congruent - isolated) and interference (incongruent - isolated) effects. 
+I will target the original trial structure, which is 20 trials per cell for full composites (cue x congruency x alignment x correct = 2^4) totalling 400 full trials, plus 20 trials per cell for isolated (cue x correct = 2^2) totalling 80. 
+Stimuli are grayscale composites from open databases (chicago Face Database), proprocessed to produce aligned/misaligned versons and isolated haves.
+Cueing is rendered as a line between halves. 
 
 ### Links to repos 
 * Replication repository: https://github.com/psych251/jin2024
@@ -33,28 +43,53 @@ Potential challenges include implementing the online experiment. Although the au
 Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size.  Considerations of feasibility for selecting planned sample size.
 
 The original study reported a large facilitation (*z* = 10.17, *p* < 0.001) and interference (*z* = -20.33, *p* < 0.001) effects in accuracy. 
+The original study recruited 455 partiicpants becuase it tested three separate tasks (part-whole, standard composite, complete composite) and analyzed reliability and correlations across tasks, rather than because such a large sample was needed for the within-task effects. 
+In the complete composite task, the effects were large: facilitation around Δd' = +0.45 and interference around Δd' = -0.66 on aligned trials relative to isolated baseline (GLMM estimates), both highly significant.
+Given the within-subject design and the large number of trials per participant (~480 in my setup), these effects correspond to large paired-sample effect sizes.
+A simple power analysis (α = .05, two-tailed) treating Δd' as Cohen's dz shows that a sample of about 60 participants would already provide roughly 85-95% power to detect these effects, and 80 participants would raise this to about 90-98%.
+Based on these calculations, I plan to recruit 80 participants. This sample size should provide enough power to detect both facilitation and interference effects while keeping the stidy feasible given time and budget comnstraints.
 
 ### Planned Sample
 
 Planned sample size and/or termination rule, sampling frame, known demographics if any, preselection rules if any.
+- Target N: 80 Prolific participants (fluent in English; normal or corrected vision).
+- Stopping rule: Stop at 80 completed sessions or earlier if QC indicates >72 analyzable datasets after exclusions.
+- Exclusions: Discard trials with RT <200 ms or >5000 ms. Replace excludes until the analyzable N reaches 72-80.
 
 ### Materials
 
 All materials - can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
+To ensure my replication closely aligns with the original study, I contacted the corresponding author Dr. Haiyang Jin, on Oct 17, 2025 to request access to the experimental materials. Dr. Jin explained that the complete composite task used faces from the Chicago Face Database (CFD) and that copyright restrictions prevent direct sharing of those images.
+Following his guidance, I downloaded the original face stimuli from CFD and obtained his permission to use the composite stimuli privately for replication purposes. 
+Dr. Jin noted that there was no existing jsPsych script for the original study, so I implemented the complete composite task myself using jsPsych v7, matching the timing and structure reported in the paper (fixation: 500 ms, study: 500 ms, mask: 500 ms, reponse window: up to 3000 ms).
 
 ### Procedure	
 
 Can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
+The experiment followed the procedure described in Jin, Hayward, & Cheung (2024). On each trial, participants judged whether the top half of a test face matched the top half of a previously shown study face while ignoring the bottom half. 
+Each trial included a fixation cross (500 ms), a study face (500 ms), a mask (500 ms), and a test face displayed until response (up to 3000 ms).
+
+Participants pressed "S" for same and "D" for different. The task included four factors-cue position (top/bottom), alignment (aligned/misaligned), congruency (congruent/incongruent), and correct response (same/different) plus isolated-half baseline trials. 
+Each participant completed 400 full composite trials and 80 isolated trials, matching the original design.
 
 ### Analysis Plan
 
 Can also quote directly, though it is less often spelled out effectively for an analysis strategy section.  The key is to report an analysis strategy that is as close to the original - data cleaning rules, data exclusion rules, covariates, etc. - as possible.  
+- Outcomes: sensitivity d' (primary) and RT on correct trials.
+Primary tests:
+- Congruency effect (congruent > incongruent) on aligned composites; and Congruency x Alignment interaction.
+- Facilitation: aligned-congruent vs isolated; Interference: aligned-incongruent vs isolated.
+
+Models: GLMMs following the original strategy (logistic for accuracy/d' indexing; gamma or log-normal for RT)
 
 **Clarify key analysis of interest here**  You can also pre-specify additional analyses you plan to do.
 
 ### Differences from Original Study
 
 Explicitly describe known differences in sample, setting, procedure, and analysis plan from original study.  The goal, of course, is to minimize those differences, but differences will inevitably occur.  Also, note whether such differences are anticipated to make a difference based on claims in the original article or subsequent published research on the conditions for obtaining the effect.
+1. I run only the complete composite task, not the part-whole or standard composite tasks.
+2. Stimuli sourced from a public face set (CFD) matched in preprocessing; alignment/misalignment implemented via precomposited images.
+3. Recruitment frame is Prolific but with a smaller N (80) because we are testing within-task effects only, not between-task correlations. Timing, masking, cueing, and trial counts mirror the published task.
 
 ### Methods Addendum (Post Data Collection)
 
