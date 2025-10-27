@@ -59,4 +59,3 @@ rsconnect/
 *.html
 # Allow HTML in composite-face folder
 !composite-face/*.html
-!pilotA_compositeface/*.html
