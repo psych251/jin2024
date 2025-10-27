@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The composite face task</title>
+  <script src="jspsych_cf/jspsych-8.2.2/jspsych.js"></script>
+  <script src="jspsych_cf/jspsych-8.2.2/plugin-html-keyboard-response.js"></script>
+  <script src="jspsych_cf/jspsych-8.2.2/plugin-image-keyboard-response.js"></script>
+  <script src="jspsych_cf/jspsych-8.2.2/plugin-fullscreen.js"></script>
+  <script src="jspsych_cf/jspsych-8.2.2/plugin-preload.js"></script>
+  <script src="jspsych_cf/jspsych-8.2.2/plugin-virtual-chinrest.js"></script>
+  <script src="jspsych_cf/jspsych-8.2.2/plugin-browser-check.js"></script>
+  <script src="jspsych_cf/jspsych-8.2.2/plugin-instructions.js"></script>
+  <script src="jspsych_cf/jspsych-8.2.2/plugin-call-function.js"></script>
+  <link href="jspsych_cf/jspsych-8.2.2/jspsych.css" rel="stylesheet" type="text/css"></link>
+  <script src="jspsych_cf/jspsych-pavlovia.js"></script>
+
+  <!-- load js codes for composite task -->
+  <script type="text/javascript" src="param_cf/parameters_cf.js"></script>
+  <script type="text/javascript" src="param_cf/functions_cf.js"></script>
+  <script type="text/javascript" src="param_cf/settings.js"></script>
+
+</head>
+<!-- set the background and fore colors -->
+<body style="background-color:grey;color:white;"></body>
+<script>
+
+// initialize jsPsych
+var jsPsych = initJsPsych({
+  use_webaudio: false,  
+  on_close: function(){
+    if (!isPavlovia){
+      jsPsych.data.get().filter([{trial_frame: 'test_face'}, {trial_frame: 'virtual_chinrest'}]).localSave('csv', exp_name+'_'+subj_id+'.csv');
+    }
+  },
+    on_finish: async function() {
+    // Filter relevant trials and convert data to CSV
+    const csv_data = jsPsych.data.get()
+      .filter([{ trial_frame: 'test_face' }, { trial_frame: 'virtual_chinrest' }])
+      .csv();
+
+    // 1. Local backup download (optional)
+    jsPsych.data.get()
+      .filter([{ trial_frame: 'test_face' }, { trial_frame: 'virtual_chinrest' }])
+      .localSave('csv', exp_name + '_' + subj_id + '.csv');
+
+    // 2. Send data to CGI server
+    const url = "https://web.stanford.edu/~seojinl/cgi-bin/write_data.php";
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'data=' + encodeURIComponent(csv_data),
+      });
+
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
+      const text = await response.text();
+      console.log("Data upload success:", text);
+
+      // Optional visual feedback to participant
+      alert("Your data have been saved successfully! Thank you for participating.");
+
+    } catch (err) {
+      console.error("Data upload failed:", err);
+      alert("There was a problem saving your data. Please screenshot this message and contact the researcher.");
+    }
+  }
+
+}); 
+
+// "gather" participants information and save in data
+var subj_id = jsPsych.randomization.randomID(15);
+
+let url_params = new URLSearchParams(location.search);
+let prolific_id = url_params.get('PROLIFIC_PID');
+console.log("prolific id: ", prolific_id);
+
+var user_browser = navigator.userAgent;
+console.log(user_browser);
+
+// this information is defined in jscf/parameters_cf.js
+jsPsych.data.addProperties({
+  Subject: subj_id,
+  Exp_code: exp_code,
+  Exp_name: exp_name,
+  CFVersion: task.cfversion,
+  isPavlovia: isPavlovia,
+  Browser: user_browser,
+  Prolific_id: prolific_id
+})
+
+// Build the practice experiment design
+var design_prac = {
+  is_aligned: [0, 1], // 0 = misaligned; 1 = aligned
+  is_top_cued: task.is_top_cued, // 0 = bottom is cued; 1 = top is cued
+  is_congruent: [0, 1], // 0 = incongruent; 1 = congruent
+  is_cued_same: [0, 1], // 0 = different; 1 = same
+  face_group: Array.from({length:params_prac.group_names.length}, (v, i) => i), // number of face stimulus groups (starts from 0)
+  face_index: [0, 2] // 2 images in each face stimulus group [0, 1, 2, 3]
+}
+var ed_prac_raw = jsPsych.randomization.factorial(design_prac, 1);
+
+// generate the stimuli for each trial and save the stimulus list
+theout_prac = cf_face_selector(ed_prac_raw, params_prac);
+var ed_prac = theout_prac[0];
+var nPracTrialTotal = ed_prac.length;
+var stim_list_prac = theout_prac[1];
+
+// Build the main experiment design
+var design = {
+  is_aligned: [0, 1], // 0 = misaligned; 1 = aligned
+  is_top_cued: task.is_top_cued, // 0 = bottom is cued; 1 = top is cued
+  is_congruent: [0, 1], // 0 = incongruent; 1 = congruent
+  is_cued_same: [0, 1], // 0 = different; 1 = same
+  face_group: Array.from({length:params.group_names.length}, (v, i) => i), // number of face stimulus groups (starts from 0)
+  face_index: [0, 1, 2, 3] // 4 images in each face stimulus group
+}
+var ed_raw = jsPsych.randomization.factorial(design, 1);
+
+// generate the stimuli for each trial and save the stimulus list
+theout = cf_face_selector(ed_raw, params);
+var ed = theout[0];
+var nTrialTotal = ed.length;
+var stim_list = theout[1];
+
+/* create timeline */
+var timeline = [];
+
+var checkbrowser = {
+  type: jsPsychBrowserCheck,
+  minimum_width: 1000,
+  minimum_height: 600,
+  inclusion_function: (data) => {
+    return data.browser == 'chrome' && data.mobile === false
+  },
+  exclusion_message: (data) => {
+    if(data.mobile){
+      return '<p>You must use a desktop/laptop computer to participate in this experiment.</p>';
+    } else if(data.browser !== 'chrome'){
+      return '<p>You must use Chrome as your browser to complete this experiment.</p>'
+    }
+  }
+};
+timeline.push(checkbrowser);
+
+/* init connection with pavlovia.org */
+if (isPavlovia){
+  timeline.push({
+    type: jsPsychPavlovia,
+    command: "init",
+    setPavloviaInfo: function (info) {
+      console.log(info);
+      pavloviaInfo = info;
+    }
+  });
+  console.log('Running with Pavlovia...')
+}
+
+// use full screen
+var fullscreen = {
+  type: jsPsychFullscreen,
+  fullscreen_mode: true
+};
+timeline.push(fullscreen);
+
+// set virtual chinrest
+var chinrest = {
+  type: jsPsychVirtualChinrest,
+  blindspot_reps: 3,
+  resize_units: "none",
+  pixels_per_unit: 50,
+  data: {trial_frame: 'virtual_chinrest'}
+};
+timeline.push(chinrest);
+
+var preload = {
+    type: jsPsychPreload,
+    images: [stim_list_prac, stim_list],
+    show_detailed_errors: true
+};
+timeline.push(preload);
+
+// https://github.com/jspsych/jsPsych/discussions/1407#discussioncomment-308788
+var cursor_off = {
+    type: jsPsychCallFunction,
+    func: function() {
+        document.body.style.cursor= "none";
+    }
+}
+
+var cursor_on = {
+    type: jsPsychCallFunction,
+    func: function() {
+        document.body.style.cursor= "auto";
+    }
+}
+
+/* define welcome message trial */
+var welcome = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "<p>Welcome to this experiment.</p> <p>Press any key to begin.</p>"
+};
+timeline.push(welcome);
+
+var consent = {
+  type: jsPsychInstructions,
+  pages: ["<h2> Consent Form </h2>" +
+          "<p>Here is the consent form.</p>"],
+  show_clickable_nav: true
+}
+// timeline.push(consent);
+
+var instructions = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: task.instruct,
+  choices: " "
+}
+// timeline.push(instructions);
+
+// frames for trials
+// fixtion frame
+var fixation = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '<div style="font-size:60px;">+</div>',
+  choices: "NO_KEYS",
+  trial_duration: params.fix_duration,
+  data: {trial_frame: 'fixation'}
+}
+
+var studyFace = {
+  type: jsPsychImageKeyboardResponse,
+  stimulus: jsPsych.timelineVariable('study_face'),
+  choices: "NO_KEYS",
+  trial_duration: params.study_duration,
+  data: {trial_frame: 'study face'}
+}
+
+var mask = {
+  type: jsPsychImageKeyboardResponse,
+  stimulus: jsPsych.timelineVariable('mask_face'),
+  choices: "NO_KEYS",
+  trial_duration: params.mask_duration,
+  data: {trial_frame: 'mask'}
+}
+
+var testFace = {
+  type: jsPsychImageKeyboardResponse,
+  stimulus: jsPsych.timelineVariable('test_face'),
+  // stimulus_width: params.stim_width,
+  // stimulus_height: params.stim_height,
+  // stimulus_x_offset: jsPsych.timelineVariable('test_x_offset'),
+  // stimulus_y_offset: jsPsych.timelineVariable('test_y_offset'),
+  choices: ['1', '2'],
+  // stimulus_duration: params.test_duration,
+  data: jsPsych.timelineVariable('data'),
+  on_finish: function(data){
+    // data.Response = jsPsych.pluginAPI.getKeyboardResponse(data.key_press);
+    data.Correct = jsPsych.pluginAPI.compareKeys(data.Correct_response, data.response);
+    data.RT = data.rt;
+  }
+}
+
+/* practice */
+var pracFeedback = {
+  type: jsPsychHtmlKeyboardResponse,
+  choices: "NO_KEYS",
+  stimulus: function(){
+    // This function will check the accuracy of the last response and use that information to set
+    // the stimulus value on each trial.
+    var data = data = jsPsych.data.get().last(1).values()[0];
+    if(data.Correct){
+      return "<p style='color:blue;'>Correct!</p>"; // the parameter value has to be returned from the function
+    } else {
+      return "<p style='color:red;'>Wrong</p>"; // the parameter value has to be returned from the function
+    }
+  },
+  trial_duration: params.ISI,
+  post_trial_gap: params.ISI/2
+}
+
+// timeline for one trial in practice
+var trialProcedurePrac = {
+  timeline: [fixation, studyFace, mask, testFace, pracFeedback], 
+  timeline_variables: ed_prac 
+}
+
+var pracDebrief = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function(){
+    var trials = jsPsych.data.get().filter({trial_frame: 'test_face'});
+    var correct_trials = trials.last(nPracTrialTotal).filter({Correct: true});
+    var accuracy = correct_trials.count() / nPracTrialTotal;
+    if (accuracy >= prac_criteria){
+      pracmsg = '<p style="color:blue;">Good job! You may proceed to the main experiment now. </p>';
+    } else {
+      pracmsg = '<p>The accuracy for the last practice session was '+accuracy*100+'%, which is below '+prac_criteria*100+'%. Please continue the practice. </p>';
+    }
+    return pracmsg+'<p>Please press "c" to continue. </p>' 
+  },
+  choices: 'c'
+}
+
+var pracLoopNode = {
+  timeline: [instructions, cursor_off, trialProcedurePrac, cursor_on, pracDebrief],
+  loop_function: function(){
+    var trials = jsPsych.data.get().filter({trial_frame: 'test_face'});
+    var correct_trials = trials.last(nPracTrialTotal).filter({Correct: true});
+    var accuracy = correct_trials.count() / nPracTrialTotal;
+    if(accuracy < prac_criteria){
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+timeline.push(pracLoopNode)
+/* pracetice doen */
+
+var startMainExp = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '<p>The main experiment will start now...</p>'+'<p>Please press any key to continue. </p>'
+}
+timeline.push(startMainExp)
+
+var takeBreak = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function(){
+    var data = jsPsych.data.get().last(1).values()[0];
+    return '<p>Please take a break. </p><p> You are '+ data.Trial_num/nTrialTotal*100+'% finished for this task.</p>'
+  },
+  choices: "NO_KEYS",
+  trial_duration: params.minBreakSec
+}
+
+var readyToGo = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: 'Please press "c" to continue when you are ready.',
+  choices: 'c',
+  post_trial_gap: params.ISI
+}
+
+var checkBreakNode = {
+  timeline: [takeBreak, readyToGo],
+  conditional_function: function(){
+    // get the data from the previous trial,
+    // and check which key was pressed
+    var data = jsPsych.data.get().last(1).values()[0];
+    if(!(data.Trial_num % params.nTrialPerBreak) && (data.Trial_num != nTrialTotal)){
+        return true; // take a break
+    } else {
+        return false; // skip the break
+    }
+  }
+}
+
+var ISI = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '',
+  choices: "NO_KEYS",
+  trial_duration: params.ISI
+}
+
+// timeline for one trial in main experiment
+var trialProcedure = {
+  timeline: [fixation, studyFace, mask, testFace, checkBreakNode, ISI], 
+  timeline_variables: ed 
+}
+timeline.push(cursor_off)
+timeline.push(trialProcedure)
+timeline.push(cursor_on)
+
+// finishing
+var finishing = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "<p>Congratulations! You have finished this task.</p>" +
+  "<p>Press any key to continue.</p>"
+};
+timeline.push(finishing);
+
+// debrief the results
+var debriefBlock = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function() {
+
+    var trials = jsPsych.data.get().filter({trial_frame: 'test_face'});
+    var correct_trials = trials.filter({Correct: true});
+    var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+    var rt = Math.round(correct_trials.select('rt').mean());
+
+    return "<p>You responded correctly on "+accuracy+"% of the trials.</p>"+
+    "<p>Your average response time was "+rt+"ms.</p>"+
+    "<p>Press any key to complete the experiment. Thank you!</p>";
+  }
+};
+timeline.push(debriefBlock);
+
+// exit fullscreen mode
+timeline.push({
+  type: jsPsychFullscreen,
+  fullscreen_mode: false
+});
+
+/* init connection with pavlovia.org */
+if(isPavlovia){
+  timeline.push({
+    type: jsPsychPavlovia,
+    command: "finish",
+    participantId: subj_id
+  });
+}
+
+/* start the experiment */
+jsPsych.run(timeline);
+
+</script>
+</html>
