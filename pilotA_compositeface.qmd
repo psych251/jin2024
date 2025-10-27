@@ -1,0 +1,85 @@
+---
+title: "Pilot A: Composite Face Task"
+author: "Seojin Lee"
+format: html
+execute:
+  echo: true
+  eval: true
+editor: visual
+---
+
+## Setup
+
+```{r}
+# install.packages("tidyverse") # only if not already installed
+library(tidyverse)
+```
+
+## Load data
+
+```{r}
+data1 <- read_csv("~/Downloads/compositeface_20251026_213322.csv") %>%
+mutate(Participant = "P1")
+
+data2 <- read_csv("~/Downloads/compositeface_20251026_230456.csv") %>%
+mutate(Participant = "P2")
+
+# Combine into one dataset
+
+data_all <- bind_rows(data1, data2)
+```
+
+## Preprocess and summarize
+
+```{r}
+df <- data_all %>%
+select(-rt) %>%  # remove the lowercase duplicate
+filter(trial_frame == "test_face") %>%
+rename(
+is_aligned = Alignment,
+is_congruent = Congruency,
+rt = RT
+) %>%
+select(Participant, is_aligned, is_congruent, Correct, rt)
+
+summary_df <- df %>%
+group_by(Participant, is_aligned, is_congruent) %>%
+summarise(
+mean_acc = mean(Correct, na.rm = TRUE),
+mean_rt  = mean(rt, na.rm = TRUE),
+n = n(),
+.groups = "drop"
+)
+
+summary_df
+```
+
+## Accuracy Plot
+
+```{r}
+ggplot(summary_df, aes(x = is_congruent, y = mean_acc, fill = is_aligned)) +
+geom_bar(stat = "identity", position = position_dodge()) +
+facet_wrap(~ Participant) +
+labs(
+title = "Accuracy by Condition (per Participant)",
+x = "Congruency",
+y = "Mean Accuracy",
+fill = "Alignment"
+) +
+theme_minimal()
+```
+
+## Reaction Time Plot
+
+```{r}
+ggplot(summary_df, aes(x = is_congruent, y = mean_rt, fill = is_aligned)) +
+geom_bar(stat = "identity", position = position_dodge()) +
+facet_wrap(~ Participant) +
+labs(
+title = "Reaction Time by Condition (per Participant)",
+x = "Congruency",
+y = "Mean RT (ms)",
+fill = "Alignment"
+) +
+theme_minimal()
+```
