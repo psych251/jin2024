@@ -25,16 +25,13 @@ function shuffleArray(array) {
 /* main trials */
 var stim_group = [
   ['F1002', 'F1015', 'F1046', 'F1059'],
-  ['F2016',	'F2017', 'F2032',	'F2067'],
-  ['F3047',	'F3062', 'F3079',	'F3112'],
-  ['F4018',	'F4020', 'F4040',	'F4064'],
-  ['F5033',	'F5068', 'F5076',	'F5078'],
-  ['M1119',	'M1122', 'M1125',	'M1186'],
-  ['M2141',	'M2142', 'M2198',	'M2201'],
-  ['M3013',	'M3153', 'M3183',	'M3187'],
-  ['M4134',	'M4136', 'M4188',	'M4197'],
-  ['M5146',	'M5152', 'M5154',	'M5178',]
+  ['F2016','F2017','F2032','F2067'],
+  ['F3047','F3062','F3079','F3112'],
+  ['M1119','M1122','M1125','M1186'],
+  ['M2141','M2142','M2198','M2201'],
+  ['M3013','M3153','M3183','M3187']
 ];
+
 
 // randomize the order of images in each group
 for (let i = 0; i < stim_group.length; i++) {
@@ -76,14 +73,14 @@ params.mask_list = ['F1002_bscr1.png', 'F1002_bscr2.png',
                     'F3062_bscr1.png', 'F3062_bscr2.png',
                     'F3079_bscr1.png', 'F3079_bscr2.png',
                     'F3112_bscr1.png', 'F3112_bscr2.png',
-                    'F4018_bscr1.png', 'F4018_bscr2.png',
-                    'F4020_bscr1.png', 'F4020_bscr2.png',
-                    'F4040_bscr1.png', 'F4040_bscr2.png',
-                    'F4064_bscr1.png', 'F4064_bscr2.png',
-                    'F5033_bscr1.png', 'F5033_bscr2.png',
-                    'F5068_bscr1.png', 'F5068_bscr2.png',
-                    'F5076_bscr1.png', 'F5076_bscr2.png',
-                    'F5078_bscr1.png', 'F5078_bscr2.png',
+                    // 'F4018_bscr1.png', 'F4018_bscr2.png',
+                    // 'F4020_bscr1.png', 'F4020_bscr2.png',
+                    // 'F4040_bscr1.png', 'F4040_bscr2.png',
+                    // 'F4064_bscr1.png', 'F4064_bscr2.png',
+                    // 'F5033_bscr1.png', 'F5033_bscr2.png',
+                    // 'F5068_bscr1.png', 'F5068_bscr2.png',
+                    // 'F5076_bscr1.png', 'F5076_bscr2.png',
+                    // 'F5078_bscr1.png', 'F5078_bscr2.png',
                     'M1119_bscr1.png', 'M1119_bscr2.png',
                     'M1122_bscr1.png', 'M1122_bscr2.png',
                     'M1125_bscr1.png', 'M1125_bscr2.png',
@@ -96,17 +93,17 @@ params.mask_list = ['F1002_bscr1.png', 'F1002_bscr2.png',
                     'M3153_bscr1.png', 'M3153_bscr2.png',
                     'M3183_bscr1.png', 'M3183_bscr2.png',
                     'M3187_bscr1.png', 'M3187_bscr2.png',
-                    'M4134_bscr1.png', 'M4134_bscr2.png',
-                    'M4136_bscr1.png', 'M4136_bscr2.png',
-                    'M4188_bscr1.png', 'M4188_bscr2.png',
-                    'M4197_bscr1.png', 'M4197_bscr2.png',
-                    'M5146_bscr1.png', 'M5146_bscr2.png',
-                    'M5152_bscr1.png', 'M5152_bscr2.png',
-                    'M5154_bscr1.png', 'M5154_bscr2.png',
-                    'M5178_bscr1.png', 'M5178_bscr2.png'
+                    // 'M4134_bscr1.png', 'M4134_bscr2.png',
+                    // 'M4136_bscr1.png', 'M4136_bscr2.png',
+                    // 'M4188_bscr1.png', 'M4188_bscr2.png',
+                    // 'M4197_bscr1.png', 'M4197_bscr2.png',
+                    // 'M5146_bscr1.png', 'M5146_bscr2.png',
+                    // 'M5152_bscr1.png', 'M5152_bscr2.png',
+                    // 'M5154_bscr1.png', 'M5154_bscr2.png',
+                    // 'M5178_bscr1.png', 'M5178_bscr2.png'
                   ];
 params.mask_dir = 'stim/main_mask/';
-params.group_names = ['F1', 'F2', 'F3', 'F4', 'F5', 'M1', 'M2', 'M3', 'M4', 'M5'];
+params.group_names = ['F1', 'F2', 'F3', 'M1', 'M2', 'M3'];
 params.stim_group = stim_group;
 params.stim_dir = 'stim/main_stim/';
 

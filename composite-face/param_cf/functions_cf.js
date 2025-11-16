@@ -50,7 +50,14 @@ function cf_face_selector(ed, params){
     }
 
     // face stimuli used for each trial
+
     var this_group_stim = params.stim_group[item.face_group];
+    console.log("=== DEBUG ===");
+    console.log("item.face_group =", item.face_group);
+    console.log("params.stim_group =", params.stim_group);
+    console.log("this_group_stim =", this_group_stim);
+    console.log("item.face_set =", item.face_set);
+
     var study_face = this_group_stim[item.face_set[0]]+'_'+this_group_stim[item.face_set[1]]+study_ali+params.stim_ext; // '_'+Cue[item.is_top_cued]+
     var test_face = this_group_stim[item.face_set[2]]+'_'+this_group_stim[item.face_set[3]]+'_'+Alignment[item.is_aligned].substring(0, 3)+test_cue+params.stim_ext;
     item.study_face = params.stim_dir+params.group_names[item.face_group]+'/'+study_face;

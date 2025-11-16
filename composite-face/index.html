@@ -16,7 +16,7 @@
 
   <!-- load js codes for composite task -->
   <script type="text/javascript" src="param_cf/parameters_cf.js"></script>
-  <script type="text/javascript" src="param_cf/functions_cf.js"></script>
+  <script src="param_cf/functions_cf.js?v=9999"></script>
   <script type="text/javascript" src="param_cf/settings.js"></script>
 
 </head>
@@ -112,7 +112,7 @@ var design = {
   is_top_cued: task.is_top_cued, // 0 = bottom is cued; 1 = top is cued
   is_congruent: [0, 1], // 0 = incongruent; 1 = congruent
   is_cued_same: [0, 1], // 0 = different; 1 = same
-  face_group: Array.from({length:params.group_names.length}, (v, i) => i), // number of face stimulus groups (starts from 0)
+  face_group: Array.from({length: params.group_names.length}, (v, i) => i),
   face_index: [0, 1, 2, 3] // 4 images in each face stimulus group
 }
 var ed_raw = jsPsych.randomization.factorial(design, 1);
