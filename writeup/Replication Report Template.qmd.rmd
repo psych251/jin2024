@@ -1,0 +1,664 @@
+---
+title: "Replication of 'Two faces of holistic face processing: Facilitation and interference underlying part-whole and composite effects' by Jin, Hayward, & Cheung (2024, Journal of Vision)"
+author: "Seojin Lee (seojinl@stanford.edu)"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+  html:
+    toc: true
+    toc_depth: 3
+---
+
+<!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+## Introduction
+
+### Justification 
+My research interests lie in human visual perception, particularly in understanding how the brain integrates low-level information from complex visual input to achieve higher-level understanding of the object. 
+Face is a great example of this, as it involves integrating smaller visual fragments such as eyes, nose, and mouth to achieve an understanding of the identity. 
+The complete composite task from Jin, Hayward, & Cheung (2024) offers a well-defined behavioral paradigm to study this integration process. 
+Specifically, it separates two components of holistic processing -- facilitation and interference -- rather than treating holistic processing as a single phenomenon.
+Replicating these effects will help me better understand the mechanisms of holistic face percepton and will inform my own research interests in visual integration. 
+
+### Stimuli and Procedure
+This project replicates the **complete composite task** online using jsPsych on Prolific. 
+Each trial presents the following: fixaton (500 ms), a study composite (500 ms), a mask (500 ms), then a test stimulus.
+Participants judged whether the cued half (top or bottom) of the test face matched the same half of the study face, while ignoring the other half. 
+The design manipulates:
+  - Congruency (congruent vs. incongruent)
+  - Alignment (aligned vs. misaligned)
+  - Correct response (same vs. different)
+  - Cue location (top vs. bottom)
+
+Isolated top/bottom halves provide a baselien to measure facilitation (congruent - isolated) and interference (incongruent - isolated) effects. 
+The target trial structure replicates the original:
+  - 400 composite trials (2 x 2 x 2 x 2)
+For my replication, after piloting, I removed isolated blocks as the composite congruency x alignment effects I aim to replicate do not depend on isolated trials.
+
+Stimuli were grayscale composite faces from the Chicago Face Database. I generated aligned and misaligned versions and added cue brackets to indicate the relevant half.
+  
+### Links to repos 
+* Replication repository: https://github.com/psych251/jin2024
+* Original paper: https://jov.arvojournals.org/article.aspx?articleid=2802147
+
+
+## Methods
+
+### Note on Pilot Studies
+
+Two pilot studies were conducted prior to preregistered data collection.  
+Pilot A tested an early version of the task with a longer trial structure, while Pilot B implemented the finalized version used for the preregistered design.  
+All confirmatory analyses in the present report refer to Pilot B, whereas Pilot A is included for completeness and design validation.
+
+### Power Analysis
+
+Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size.  Considerations of feasibility for selecting planned sample size.
+
+The original paper reported large congruency and alignment effects in the complete composite task (Δd' = +0.45 for facilitation; Δd' = -0.66 for interference).
+These effects were estimated using 455 participants because the authors examined reliability and correations across three holistic tasks, not because the composite task itself requried such a large sample. 
+Im my replication, I focus on replicating the complete congruency x alignment effect, which has been shown to be large and reliable.
+Using a conservative estimate of Cohen's dz = 0.40-0.50 for within-subject congruency effects, 60-80 participants provide ~85-95% power. 
+
+Planned N = 72, which balances high power, online data quanlity, and feasibility.
+
+### Planned Sample
+
+  - Target N: 72 Prolific participants (English-speaking adults, normal/corrected vision)
+  - Stopping rule: Stop once 72 valid submissions are collected, accept 72-80 usable datasets after exclisions. 
+  - Exclusions: 
+    - RT < 200 ms or > 5000 ms
+    - Incomplete responses
+    - Participants who fail browser/attention checks
+
+### Materials
+
+To match stimulus properties as closely as possible, I contacted the original author (Dr. Haiyang Jin, Oct 27, 2025). 
+Because of copyright restrictions, the authors could not share their exact composite images, but they confirmed that stimuli were constructed from the Chicago Face Database.
+Following their guidnace, I downloaded CFD images, generated aligned and misaligned composites, created isolated halves initially, and added cue brackets.
+
+### Procedure	
+
+Can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
+The experiment followed the procedure described in Jin, Hayward, & Cheung (2024):
+  “Each trial began with a fixation cross (500 ms), followed by a composite study face (500 ms), a mask (500 ms), and then a composite test face that remained onscreen until response.”
+On each trial, participants judged whether the cued half of a test face matched the study face. 
+The factorical structure included:
+  - Cue (top/bottom)
+  - Congruency (congruent/incongruent)
+  - Alignment (aligned/misaligned)
+  - Same/different
+Participants completed only composite trials in this replication (see Differences section below).
+
+
+### Analysis Plan
+
+Can also quote directly, though it is less often spelled out effectively for an analysis strategy section.  The key is to report an analysis strategy that is as close to the original - data cleaning rules, data exclusion rules, covariates, etc. - as possible.  
+- Outcomes: sensitivity d' (primary) and RT on correct trials.
+Primary tests:
+- Congruency effect (congruent > incongruent) on aligned composites; and Congruency x Alignment interaction.
+- Facilitation: aligned-congruent vs isolated; Interference: aligned-incongruent vs isolated.
+
+Models: GLMMs following the original strategy (logistic for accuracy/d' indexing; gamma or log-normal for RT)
+
+**Clarify key analysis of interest here**  You can also pre-specify additional analyses you plan to do.
+
+### Differences from Original Study
+
+Explicitly describe known differences in sample, setting, procedure, and analysis plan from original study.  The goal, of course, is to minimize those differences, but differences will inevitably occur.  Also, note whether such differences are anticipated to make a difference based on claims in the original article or subsequent published research on the conditions for obtaining the effect.
+Several differences between my replication and Jin, Hayward, & Cheung (2024) exist due to practical constraints of online testing. 
+1. Task Scope
+The original study administered three holistic processing tasks (part-whole, standard composite, complete composite) within the same session, using a large sample to estimate correlations and reliability across tasks. 
+In contrast, my replication tests only the complete composite task, because my goal is to replicate the within-task effects (facilitation and interference), not between-task relationships. 
+Anticipated impact: The complete composite task is fully self-contained and does not rely on other tasks, so removing the part-whiole and standard compostie tasks should not significantly affect the replication of the key effects. 
+
+2. Sample size 
+The original study recruited N = 455 online participants, which was driven by their goal of estimating cross-task reliability and between-task correaltions. 
+My replication aims to recruit N = 72 Prolific participants, which is sufficient to detect the large within-subject d' effects reported in the original paper (facilitation: +0.45, interference: -0.66).
+Anticipated impact: Power analysis using conservative medium effect sizes (d = 0.30-0.40) indicates >80% power with N = 72. Since I am not estimating cross-task correlations, the reduced sample size is appropriate and should be enough the replicate the core effects of the complete composite task.
+
+3. Trial count and session duration
+The original task contained 400 composite trials + 80 isolated trials (~480 trials), which took ~40 minutes.
+My pilot implementation (Pilot A) unintentionally produced a much longer structure (~704 trials). Based on pilot feedback and Prolific feasibility considerations, I reduced the number of trials per cell by approximately half and removed the isolated-half baseline conditions, since my project does not analyze part-based performance. 
+The final design preserves the full 2 x 2 x 2 composite structure (cue x alignment x congruency) but with fewer repetitions per cell. 
+Anticipated impact: The original trial duration is quite long, increasing the risk of fatigue, dropout, and noisier responses in an online setting. Composite congruency and alignment effects are large and highly reliable, and prior studies indicate that these effects do not require very high trial counts to emerge. Therefore, even without isolated-half baselines and with fewer repetitions per condition, the reduced design should remain a valid and sensitive test of holistic face processing.
+
+4. Analysis plan
+I follow the same analysis approach described in the paper: logistic GLMMs for accuracy-derived sensitivity (d' indexed by fixed effects), with congruency, alignment, cue, and their interaction terms entered as predcitors.
+I apply the same trial-level exclusion rules (extreme RTs, invalid responses), and compute facilitation and interference as differences from isolated baselines. 
+Anticipated impct: My analysis plan matches the original closely, and differences in sample or trial count do not alter the modeling structure. 
+
+
+### Methods Addendum (Post Data Collection)
+
+#### Actual Sample
+Fifty participants were recruited via Prolific. All participants were adults and reported normal or corrected-to-normal vision. Data were screened using the preregistered exclusion criteria: trials with reaction times shorter than 200 ms or longer than 3000 ms were excluded, as were incomplete or invalid responses. After applying these criteria, all 50 participants were retained for analysis.
+
+#### Differences from pre-data collection methods plan
+The preregistered target sample size was N = 72. Data collection was stopped at N = 50 due to time constraints. No other deviations from the preregistered methods or analysis plan were made.
+
+## Results
+### Pilot A (Preliminary Implementation)
+Pilot A was conducted on October 26, 2025, using an early version of the jsPsych composite task.  
+This version unintentionally included a larger number of trials (~704 total), which made the session longer and helped identify design adjustments for the final study.  
+Two participants completed Pilot A.
+
+#### Data Loading and Preprocessing
+```{r}
+library(tidyverse)
+
+data1 <- read_csv("~/Downloads/compositeface_20251026_213322.csv") %>%
+  mutate(Participant = "P1")
+
+data2 <- read_csv("~/Downloads/compositeface_20251026_230456.csv") %>%
+  mutate(Participant = "P2")
+# Combine into one dataset
+data_all <- bind_rows(data1, data2)
+
+# Preprocess
+df <- data_all %>%
+  select(-rt) %>%  # remove lowercase duplicate column
+  filter(trial_frame == "test_face") %>%
+  rename(
+    is_aligned   = Alignment,
+    is_congruent = Congruency,
+    rt           = RT
+  ) %>%
+  select(Participant, is_aligned, is_congruent, Correct, rt)
+
+# Summary statistics
+summary_df <- df %>%
+  group_by(Participant, is_aligned, is_congruent) %>%
+  summarise(
+    mean_acc = mean(Correct, na.rm = TRUE),
+    mean_rt  = mean(rt, na.rm = TRUE),
+    n = n(),
+    .groups = "drop"
+  )
+
+summary_df
+```
+#### Accuracy by Condition
+```{r}
+ggplot(summary_df, aes(x = is_congruent, y = mean_acc, fill = is_aligned)) +
+geom_bar(stat = "identity", position = position_dodge()) +
+facet_wrap(~ Participant) +
+labs(
+title = "Pilot A: Accuracy by Congruency and Alignment",
+x = "Congruency",
+y = "Mean Accuracy",
+fill = "Alignment"
+) +
+theme_minimal()
+
+```
+
+#### Reaction Time by Condition
+```{r}
+ggplot(summary_df, aes(x = is_congruent, y = mean_rt, fill = is_aligned)) +
+geom_bar(stat = "identity", position = position_dodge()) +
+facet_wrap(~ Participant) +
+labs(
+title = "Pilot A: Reaction Time by Congruency and Alignment",
+x = "Congruency",
+y = "Mean RT (ms)",
+fill = "Alignment"
+) +
+theme_minimal()
+
+```
+#### Notes on Pilot A
+Pilot A revealed several issues that informed updates for Pilot B:
+The session duration was too long (~704 trials) and risked fatigue. This motivated reducing the number of repetitions per cell.
+The overall alignment × congruency pattern was visible but noisy due to only two participants.
+Minor issues with file naming and duplicate RT columns were corrected before Pilot B.
+
+### Pilot B (Finalized Implementation)
+
+Pilot B was collected on November 29, 2025, using the finalized version of the jsPsych composite task.  
+This version implemented the full 2 × 2 × 2 × 2 composite design while reducing repetitions per condition to keep the task feasible for online data collection.
+
+Two participants completed Pilot B. The purpose of Pilot B was to (a) verify the corrected trial structure, (b) ensure timing and branching logic worked as intended, and (c) confirm that the expected Congruency × Alignment pattern emerged in a clean dataset.
+#### Data Import and Initial Inspection
+```{r}
+library(tidyverse)
+library(lme4)
+library(ggplot2)
+
+d1 <- read_csv("~/replication_jin2024/data/compositeface_20251129_161517.csv")
+d2 <- read_csv("~/replication_jin2024/data/compositeface_20251129_162056.csv")
+
+raw <- bind_rows(d1, d2)
+
+dim(raw)
+head(raw)
+```
+#### Filtering to Experimental Trials
+
+```{r}
+df <- raw %>%
+filter(
+trial_type == "image-keyboard-response",
+!is.na(SameDifferent),
+!is.na(Congruency),
+!is.na(Alignment),
+!is.na(Cue)
+)
+
+dim(df)
+head(df)
+
+```
+
+#### Cleaning and Variable Setup
+
+```{r}
+df <- df %>%
+mutate(
+Subject = factor(Subject),
+Congruency = factor(Congruency, levels = c("congruent", "incongruent")),
+Alignment = factor(Alignment, levels = c("aligned", "misaligned")),
+Cue = factor(Cue, levels = c("top", "bot")),
+SameDifferent = factor(SameDifferent, levels = c("same", "different")),
+Correct = as.numeric(Correct),
+RT = as.numeric(RT)
+)
+
+# RT Exclusions
+df <- df %>% filter(RT > 200, RT < 3000)
+nrow(df)
+
+```
+
+##### Confirmatory Model: Accuracy (GLMM)
+Logistic mixed-effects model predicting accuracy from Congruency, Alignment, and their interaction, with a random intercept for Subject. This model tests whether the expected Congruency × Alignment interaction (i.e., strongest interference in aligned–incongruent condition) is present.
+```{r}
+acc_model <- glmer(
+Correct ~ Congruency * Alignment + (1 | Subject),
+data = df,
+family = binomial,
+control = glmerControl(optimizer = "bobyqa")
+)
+
+summary(acc_model)
+
+```
+#### RT Analysis (LMER)
+
+```{r}
+# Z-scoring RTs within Subject
+df <- df %>%
+group_by(Subject) %>%
+mutate(RT_z = scale(RT)[,1]) %>%
+ungroup()
+
+# Linear Mixed-Effects Model on RT
+rt_model <- lmer(
+RT_z ~ Congruency * Alignment + (1 | Subject),
+data = df %>% filter(Correct == 1)
+)
+
+summary(rt_model)
+
+```
+#### Descriptive Plots
+Accuracy Summary
+```{r}
+# Accuracy Summary
+acc_summary <- df %>%
+group_by(Congruency, Alignment) %>%
+summarise(acc = mean(Correct))
+
+ggplot(acc_summary, aes(Congruency, acc, fill = Alignment)) +
+geom_col(position = "dodge") +
+labs(title = "Pilot B: Accuracy by Condition",
+y = "Accuracy") +
+theme_minimal()
+
+```
+Reaction Time Summary
+
+```{r}
+# Reaction Time Summary
+rt_summary <- df %>%
+filter(Correct == 1) %>%
+group_by(Congruency, Alignment) %>%
+summarise(rt = mean(RT))
+
+ggplot(rt_summary, aes(Congruency, rt, fill = Alignment)) +
+geom_col(position = "dodge") +
+labs(title = "Pilot B: Reaction Time (Correct Trials)",
+y = "RT (ms)") +
+theme_minimal()
+
+```
+RT Plot (Paper-Style)
+```{r}
+rt_summary2 <- df %>%
+filter(Correct == 1) %>%
+group_by(Alignment, Congruency) %>%
+summarise(
+mean_rt = mean(RT),
+se_rt = sd(RT) / sqrt(n()),
+.groups = "drop"
+)
+
+ggplot(rt_summary2, aes(x = Alignment, y = mean_rt, color = Congruency)) +
+geom_point(size = 3, position = position_dodge(width = 0.4)) +
+geom_errorbar(
+aes(ymin = mean_rt - se_rt, ymax = mean_rt + se_rt),
+width = 0.1,
+position = position_dodge(width = 0.4)
+) +
+labs(title = "Pilot B Reaction Time (Paper-Style Format)",
+y = "RT (ms)", x = "Alignment") +
+coord_cartesian(ylim = c(600, 1400)) +
+theme_minimal(base_size = 14)
+
+```
+
+d′ Analysis (Sensitivity)
+
+```{r}
+compute_dprime <- function(hits, fas, n_hit, n_fa) {
+hit_rate <- (hits + 0.5) / (n_hit + 1)
+fa_rate  <- (fas + 0.5) / (n_fa + 1)
+qnorm(hit_rate) - qnorm(fa_rate)
+}
+
+dp <- df %>%
+group_by(Subject, Congruency, Alignment) %>%
+summarise(
+hits = sum(Correct == 1 & SameDifferent == "same"),
+fas  = sum(Correct == 0 & SameDifferent == "different"),
+n_hit = sum(SameDifferent == "same"),
+n_fa  = sum(SameDifferent == "different"),
+dprime = compute_dprime(hits, fas, n_hit, n_fa),
+.groups = "drop"
+)
+
+
+```
+d′ Plot (Paper-Style)
+
+```{r}
+dp_summary <- dp %>%
+group_by(Congruency, Alignment) %>%
+summarise(
+mean_dp = mean(dprime),
+se_dp = sd(dprime) / sqrt(n()),
+.groups = "drop"
+)
+
+ggplot(dp_summary, aes(x = Alignment, y = mean_dp, color = Congruency)) +
+geom_point(size = 3, position = position_dodge(width = 0.4)) +
+geom_errorbar(
+aes(ymin = mean_dp - se_dp, ymax = mean_dp + se_dp),
+width = 0.1,
+position = position_dodge(width = 0.4)
+) +
+labs(title = "Pilot B d′ by Congruency × Alignment",
+y = "d′ (Sensitivity)", x = "Alignment") +
+coord_cartesian(ylim = c(0, 2.5)) +
+theme_minimal(base_size = 14)
+
+```
+
+Pilot B confirmed that:
+- The reduced trial count produced cleaner, faster sessions.
+- All condition labels (Congruency, Alignment, Cue, SameDifferent) were correctly logged.
+- The expected Aligned–Incongruent cost appeared in both accuracy and RT.
+- No structural or timing bugs remained after adjustments from Pilot A.
+
+### Final Results
+### Data preparation
+
+Data preparation following the analysis plan.
+- Analyses were conducted on data from N = 50 participants after applying preregistered exclusion criteria (RT < 200 ms or > 3000 ms, incomplete trials). Only experimental composite trials were included. Accuracy, reaction time (RT), and sensitivity (d′) were analyzed following the same pipeline used in Pilot B.
+
+```{r include=F}
+### Data Preparation
+
+#### Load Relevant Libraries and Functions
+
+library(tidyverse)
+
+#### Import data
+
+data_dir <- "~/Downloads/compositeface_final/"
+
+files <- list.files(
+  path = data_dir,
+  pattern = "\\.csv$",
+  full.names = TRUE
+)
+
+length(files)   # should be 50
+
+raw <- files %>%
+  set_names() %>%
+  map_dfr(
+    ~ read_csv(.x, show_col_types = FALSE) %>%
+        mutate(Subject = basename(.x))
+  )
+
+length(unique(raw$Subject))  # should be 50
+
+```
+
+#### Data exclusion / filtering
+```{r}
+df <- raw %>%
+  filter(
+    trial_type == "image-keyboard-response",
+    !is.na(SameDifferent),
+    !is.na(Congruency),
+    !is.na(Alignment),
+    !is.na(Cue)
+  )
+
+dim(df)
+
+```
+#### Prepare data for analysis - create columns etc.
+```{r}
+df <- df %>%
+  mutate(
+    Subject = factor(Subject),
+    Congruency = factor(Congruency, levels = c("congruent", "incongruent")),
+    Alignment = factor(Alignment, levels = c("aligned", "misaligned")),
+    Cue = factor(Cue, levels = c("top", "bot")),
+    SameDifferent = factor(SameDifferent, levels = c("same", "different")),
+    Correct = as.numeric(Correct),
+    RT = as.numeric(RT)
+  )
+
+# RT exclusions
+df <- df %>% filter(RT > 200, RT < 3000)
+
+length(unique(df$Subject))  # should still be 50
+nrow(df)
+
+```
+
+### Confirmatory analysis
+#### Confirmatory analysis - Accuracy (GLMM)
+```{r}
+acc_model <- glmer(
+  Correct ~ Congruency * Alignment + (1 | Subject),
+  data = df,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa")
+)
+summary(acc_model)
+
+```
+#### Confirmatory analysis - Reaction Time (LMER)
+```{r}
+
+df <- df %>%
+  group_by(Subject) %>%
+  mutate(RT_z = scale(RT)[, 1]) %>%
+  ungroup()
+rt_model <- lmer(
+  RT_z ~ Congruency * Alignment + (1 | Subject),
+  data = df %>% filter(Correct == 1)
+)
+summary(rt_model)
+
+```
+#### d' analysis (sensitivity)
+```{r}
+compute_dprime <- function(hits, fas, n_hit, n_fa) {
+  hit_rate <- (hits + 0.5) / (n_hit + 1)
+  fa_rate  <- (fas + 0.5) / (n_fa + 1)
+  qnorm(hit_rate) - qnorm(fa_rate)
+}
+dp <- df %>%
+  group_by(Subject, Congruency, Alignment) %>%
+  summarise(
+    hits = sum(Correct == 1 & SameDifferent == "same"),
+    fas  = sum(Correct == 0 & SameDifferent == "different"),
+    n_hit = sum(SameDifferent == "same"),
+    n_fa  = sum(SameDifferent == "different"),
+    dprime = compute_dprime(hits, fas, n_hit, n_fa),
+    .groups = "drop"
+  )
+dp_summary <- dp %>%
+  group_by(Congruency, Alignment) %>%
+  summarise(
+    mean_dp = mean(dprime),
+    se_dp = sd(dprime) / sqrt(n()),
+    .groups = "drop"
+  )
+
+dp_summary
+
+```
+### Reaction Time plot
+```{r}
+rt_summary2 <- df %>%
+  filter(Correct == 1) %>%
+  group_by(Alignment, Congruency) %>%
+  summarise(
+    mean_rt = mean(RT),
+    se_rt = sd(RT) / sqrt(n()),
+    .groups = "drop"
+  )
+
+rt_summary2
+
+```
+```{r}
+ggplot(rt_summary2,
+       aes(x = Alignment,
+           y = mean_rt,
+           color = Congruency,
+           group = Congruency)) +
+  geom_point(size = 3, position = position_dodge(0.4)) +
+  geom_errorbar(
+    aes(ymin = mean_rt - se_rt,
+        ymax = mean_rt + se_rt),
+    width = 0.1,
+    position = position_dodge(0.4)
+  ) +
+  labs(
+    title = "Final Results: Reaction Time by Congruency × Alignment",
+    y = "RT (ms)",
+    x = "Alignment"
+  ) +
+  coord_cartesian(ylim = c(600, 1400)) +
+  theme_minimal(base_size = 14)
+
+
+```
+
+
+
+#### d' plot
+```{r}
+ggplot(dp_summary, aes(x = Alignment, y = mean_dp, color = Congruency)) +
+  geom_point(size = 3, position = position_dodge(0.4)) +
+  geom_errorbar(
+    aes(ymin = mean_dp - se_dp, ymax = mean_dp + se_dp),
+    width = 0.1,
+    position = position_dodge(0.4)
+  ) +
+  labs(
+    title = "Final Results: d′ by Congruency × Alignment",
+    x = "Alignment",
+    y = "d′ (Sensitivity)"
+  ) +
+  coord_cartesian(ylim = c(0, 2.5)) +
+  theme_minimal(base_size = 14)
+
+```
+
+### Exploratory analyses
+
+#### Cue location effect analysis 
+```{r}
+cue_model <- glmer(
+  Correct ~ Congruency * Alignment * Cue + (1 | Subject),
+  data = df,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa")
+)
+
+summary(cue_model)
+```
+
+```{r}
+# Accuracy per subject
+cue_subj <- df %>%
+  group_by(Subject, Cue, Congruency, Alignment) %>%
+  summarise(acc = mean(Correct), .groups = "drop")
+
+# Mean + SE across subjects
+cue_summary <- cue_subj %>%
+  group_by(Cue, Congruency, Alignment) %>%
+  summarise(
+    acc = mean(acc),
+    se  = sd(acc) / sqrt(n()),
+    .groups = "drop"
+  )
+
+cue_summary
+```
+```{r}
+ggplot(
+  cue_summary,
+  aes(
+    x = Alignment,
+    y = acc,
+    color = Congruency,
+    group = Congruency
+  )
+) +
+  geom_point(size = 3, position = position_dodge(0.4)) +
+  geom_errorbar(
+    aes(ymin = acc - se, ymax = acc + se),
+    width = 0.15,
+    size = 0.9,
+    position = position_dodge(0.4)
+  ) +
+  facet_wrap(~ Cue) +
+  labs(
+    title = "Accuracy by Congruency × Alignment × Cue",
+    y = "Accuracy",
+    x = "Alignment"
+  ) +
+  ylim(0.5, 1) +
+  theme_minimal(base_size = 14)
+```
+
+
+## Discussion
+
+### Summary of Replication Attempt
+
+The present study successfully replicated the core behavioral findings of Jin, Hayward, and Cheung (2024) using an online implementation of the complete composite face task. Sensitivity (d') was highest for aligned-congruent composites (M = 2.22, SE = 0.08) and lowest for aligned-incongruent composites (M = 0.73, SE = 0.08). Critically, the congruency effect -- defined as the difference between congruent and incongruent trials -- was substantially larger in the aligned condition (Δd' = 1.49) than in the misaligned condition (Δd' = 0.70), yielding a clear Congruency x Alignment interaction. This pattern closely mirrors the primary effect reported in the original study. 
+
+### Commentary
+
+Reaction time differences across conditions were modest, consistent with Jin et al. (2024). Mean RTs ranged from approximately 1037-1124 ms, with aligned-incongruent trials slower than aligned-congruent trials by about 62 ms, and a smaller congruency-related difference under misalignment. This pattern suggests that the composite face effect was expressed primarily as a sensitivity cost rather than a pronounced slowing of responses. 
+
+Despite several methodological differences from the original study (smaller smaple size, reduced trial counts, exclusion of isolated-part baselines), the qualitative and quantitative patterns of results closely matched those previously reported. Exploratory analyses indicated that holistic interference effects were evident for both cue locations, with a stronger congruency effect observed for bottom-cued trials than for top-cued trials. However, this asymmetry was not a focus of the preregistered analyses and should be interpreted cautiously. Together, these findings indicate that the complete composite task provides a robust measure of holistic face processing that generalizes across various implementation.
